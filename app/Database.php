@@ -31,6 +31,10 @@ class Database
 
     public function select(string $table, ?array $columns = null)
     {
+        if (!isset($this->connection)) {
+            throw new Exception("Error: database isn't connected.");
+        }
+
         $cols = !isset($columns) || empty($columns)
             ? '*'
             : implode($columns, ', ');
@@ -45,13 +49,39 @@ class Database
         return $rows;
     }
 
-    public function insert(string $table, $values)
+    public function insert(string $table, array $data)
     {
         if (!isset($this->connection)) {
             throw new Exception("Error: database isn't connected.");
         }
 
-        $query = "INSERT INTO " . $table . "(name) VALUES ('" . $values . "');";
+        $key = key($data);
+        $query = "INSERT INTO " . $table . "(" . ($key ?? '') . ") VALUES ('" . ($data[$key] ?? '') . "');";
+
+        return $this->connection->query($query);
+    }
+
+    public function delete(string $table, $data)
+    {
+        if (!isset($this->connection)) {
+            throw new Exception("Error: database isn't connected.");
+        }
+
+        $key = key($data);
+        $query = "DELETE FROM " . $table . " WHERE " . ($key ?? '') . "=" . ($data[$key] ?? '') . ";";
+
+        return $this->connection->query($query);
+    }
+
+    public function update(string $table, $data, $where)
+    {
+        if (!isset($this->connection)) {
+            throw new Exception("Error: database isn't connected.");
+        }
+
+        $dataKey = key($data);
+        $whereKey = key($where);
+        $query = "UPDATE " . $table . " SET " . $dataKey . "=" . $data[$dataKey] . " WHERE " . $whereKey . "=" . $where[$whereKey] . ";";
 
         return $this->connection->query($query);
     }

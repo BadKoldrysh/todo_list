@@ -7,7 +7,10 @@ use App\Database;
 $tblName = "projects";
 $db = new Database("localhost", "root", "", "todo_list_db");
 $db->connect();
-// $db->insert($tblName, "Project #3");
+// $res = $db->insert($tblName, []);
+// $res = $db->delete($tblName, ['project_id' => 3]);
+// echo $res;
+$res = $db->update($tblName, ["name" => "'Project #4'"], ['project_id' => 4]);
 $res = $db->select($tblName, []);
 foreach ($res as $item) {
     foreach ($item as $key => $value) {
