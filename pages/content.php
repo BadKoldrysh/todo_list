@@ -8,7 +8,13 @@ $tblName = "projects";
 $db = new Database("localhost", "root", "", "todo_list_db");
 $db->connect();
 // $db->insert($tblName, "Project #3");
-$res = $db->select($tblName);
+$res = $db->select($tblName, []);
+foreach ($res as $item) {
+    foreach ($item as $key => $value) {
+        echo($value . ' ');
+    }
+    echo '<br />';
+}
 ?>
 
 <body>

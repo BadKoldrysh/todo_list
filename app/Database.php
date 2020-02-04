@@ -29,15 +29,20 @@ class Database
         }
     }
 
-    public function select(string $table) {
-        $query = "SELECT * FROM " . $table;
+    public function select(string $table, ?array $columns = null)
+    {
+        $cols = !isset($columns) || empty($columns)
+            ? '*'
+            : implode($columns, ', ');
+
+        $query = "SELECT " . $cols . " FROM " . $table;
         $res = $this->connection->query($query);
+        $rows = [];
         for ($i = 0; $i < $res->num_rows; $i++) {
             $res->data_seek($i);
-            $row = $res->fetch_assoc();
-            echo "id: " . $row['project_id'] . "; prj_name: " . $row['name'] . "<br />";
+            $rows[] = $res->fetch_assoc();
         }
-        return;
+        return $rows;
     }
 
     public function insert(string $table, $values)
