@@ -25,14 +25,14 @@ class Database
         
         // Check connection
         if ($this->connection->connect_error) {
-            throw new Exception("Connection failed: " . $this->connection->connect_error);
+            throw new \Exception("Connection failed: " . $this->connection->connect_error);
         }
     }
 
     public function select(string $table, ?array $columns = null)
     {
         if (!isset($this->connection)) {
-            throw new Exception("Error: database isn't connected.");
+            throw new \Exception("Error: database isn't connected.");
         }
 
         $cols = !isset($columns) || empty($columns)
@@ -52,7 +52,7 @@ class Database
     public function insert(string $table, array $data)
     {
         if (!isset($this->connection)) {
-            throw new Exception("Error: database isn't connected.");
+            throw new \Exception("Error: database isn't connected.");
         }
 
         $key = key($data);
@@ -64,7 +64,7 @@ class Database
     public function delete(string $table, $data)
     {
         if (!isset($this->connection)) {
-            throw new Exception("Error: database isn't connected.");
+            throw new \Exception("Error: database isn't connected.");
         }
 
         $key = key($data);
@@ -76,7 +76,7 @@ class Database
     public function update(string $table, $data, $where)
     {
         if (!isset($this->connection)) {
-            throw new Exception("Error: database isn't connected.");
+            throw new \Exception("Error: database isn't connected.");
         }
 
         $dataKey = key($data);
